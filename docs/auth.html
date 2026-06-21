@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+  <meta name="theme-color" content="#02040a" />
+  <title>Al-Wilayat · Account</title>
+  <meta name="description" content="Sign in or create your Al-Wilayat account — the Shia Islamic super app." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Inter:wght@400;500;600;700;800&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/auth.css?v=20260621-lang5" />
+</head>
+<body>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <main class="auth-wrap">
+    <section class="auth-card" id="authCard">
+      <!-- Branding -->
+      <header class="brand">
+        <div class="brand-logo"><img src="assets/al-wilayat-logo.jpeg" alt="Al-Wilayat logo" /></div>
+        <div class="brand-name">Al-Wilayat</div>
+        <div class="brand-tag">Shia Islamic Library</div>
+      </header>
+
+      <div class="banner" id="banner" role="alert" hidden></div>
+
+      <!-- ============ SIGN IN ============ -->
+      <form class="view" id="view-signin" novalidate>
+        <h1 class="view-title" data-i18n="signin_title">Welcome back to Al-Wilayat</h1>
+        <p class="view-sub" data-i18n="signin_sub">Sign in to continue your journey of knowledge.</p>
+
+        <label class="field">
+          <span class="lbl" data-i18n="email">Email address</span>
+          <input type="email" name="email" autocomplete="email" data-i18n-ph="ph_email" placeholder="you@example.com" required />
+          <small class="err" data-err></small>
+        </label>
+
+        <label class="field">
+          <span class="lbl" data-i18n="password">Password</span>
+          <span class="pw-wrap">
+            <input type="password" name="password" autocomplete="current-password" data-i18n-ph="ph_password" placeholder="Your password" required />
+            <button type="button" class="pw-toggle" aria-label="Show password" data-toggle><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          </span>
+          <small class="err" data-err></small>
+        </label>
+
+        <div class="row-between">
+          <label class="check"><input type="checkbox" name="remember" /> <span data-i18n="remember">Remember me</span></label>
+          <a href="#forgot" class="link" data-nav="forgot" data-i18n="forgot">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn-primary" data-i18n="signin">Sign In</button>
+        <div class="divider"><span data-i18n="or">or</span></div>
+        <p class="swap"><span data-i18n="no_account">Don’t have an account?</span> <a href="#signup" class="link strong" data-nav="signup" data-i18n="signup">Sign Up</a></p>
+      </form>
+
+      <!-- ============ SIGN UP ============ -->
+      <form class="view" id="view-signup" novalidate hidden>
+        <h1 class="view-title" data-i18n="signup_title">Create your Al-Wilayat Account</h1>
+        <p class="view-sub" data-i18n="signup_sub">Join the community in a few seconds.</p>
+
+        <label class="field">
+          <span class="lbl" data-i18n="full_name">Full name</span>
+          <input type="text" name="full_name" autocomplete="name" data-i18n-ph="ph_name" placeholder="Your full name" required />
+          <small class="err" data-err></small>
+        </label>
+
+        <label class="field">
+          <span class="lbl" data-i18n="email">Email address</span>
+          <input type="email" name="email" autocomplete="email" data-i18n-ph="ph_email" placeholder="you@example.com" required />
+          <small class="err" data-err></small>
+        </label>
+
+        <label class="field">
+          <span class="lbl" data-i18n="create_password">Create password</span>
+          <span class="pw-wrap">
+            <input type="password" name="password" autocomplete="new-password" data-i18n-ph="ph_create" placeholder="Create a strong password" required />
+            <button type="button" class="pw-toggle" aria-label="Show password" data-toggle><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          </span>
+          <div class="strength" data-strength hidden><i></i><i></i><i></i><i></i><span class="strength-label"></span></div>
+          <small class="err" data-err></small>
+        </label>
+
+        <label class="field">
+          <span class="lbl" data-i18n="confirm">Confirm password</span>
+          <span class="pw-wrap">
+            <input type="password" name="confirm" autocomplete="new-password" data-i18n-ph="ph_reenter" placeholder="Re-enter password" required />
+            <button type="button" class="pw-toggle" aria-label="Show password" data-toggle><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          </span>
+          <small class="err" data-err></small>
+        </label>
+
+        <button type="submit" class="btn-primary" data-i18n="create_account">Create Account</button>
+        <p class="swap"><span data-i18n="have_account">Already have an account?</span> <a href="#signin" class="link strong" data-nav="signin" data-i18n="signin">Sign In</a></p>
+      </form>
+
+      <!-- ============ FORGOT PASSWORD ============ -->
+      <form class="view" id="view-forgot" novalidate hidden>
+        <h1 class="view-title" data-i18n="forgot_title">Reset your password</h1>
+        <p class="view-sub" data-i18n="forgot_sub">Enter your email and we’ll send a 6-digit reset code.</p>
+
+        <label class="field">
+          <span class="lbl" data-i18n="email">Email address</span>
+          <input type="email" name="email" autocomplete="email" data-i18n-ph="ph_email" placeholder="you@example.com" required />
+          <small class="err" data-err></small>
+        </label>
+
+        <button type="submit" class="btn-primary" data-i18n="send_code">Send Code</button>
+        <p class="swap"><a href="#signin" class="link strong" data-nav="signin" data-i18n="back">← Back to Sign In</a></p>
+      </form>
+
+      <!-- ============ RESET PASSWORD ============ -->
+      <form class="view" id="view-reset" novalidate hidden>
+        <h1 class="view-title" data-i18n="reset_title">Enter your reset code</h1>
+        <p class="view-sub" data-i18n="reset_sub">We emailed a 6-digit code. Enter it with your new password.</p>
+
+        <label class="field">
+          <span class="lbl" data-i18n="email">Email address</span>
+          <input type="email" name="email" autocomplete="email" data-i18n-ph="ph_email" placeholder="you@example.com" required />
+          <small class="err" data-err></small>
+        </label>
+
+        <label class="field">
+          <span class="lbl" data-i18n="code">Reset code</span>
+          <input type="text" name="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" data-i18n-ph="ph_code" placeholder="6-digit code" required />
+          <small class="err" data-err></small>
+        </label>
+
+        <label class="field">
+          <span class="lbl" data-i18n="new_password">New password</span>
+          <span class="pw-wrap">
+            <input type="password" name="password" autocomplete="new-password" data-i18n-ph="ph_new" placeholder="New strong password" required />
+            <button type="button" class="pw-toggle" aria-label="Show password" data-toggle><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          </span>
+          <div class="strength" data-strength hidden><i></i><i></i><i></i><i></i><span class="strength-label"></span></div>
+          <small class="err" data-err></small>
+        </label>
+
+        <label class="field">
+          <span class="lbl" data-i18n="confirm_new">Confirm new password</span>
+          <span class="pw-wrap">
+            <input type="password" name="confirm" autocomplete="new-password" data-i18n-ph="ph_renew" placeholder="Re-enter new password" required />
+            <button type="button" class="pw-toggle" aria-label="Show password" data-toggle><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          </span>
+          <small class="err" data-err></small>
+        </label>
+
+        <button type="submit" class="btn-primary" data-i18n="update_password">Update Password</button>
+        <p class="swap"><a href="#signin" class="link strong" data-nav="signin" data-i18n="back">← Back to Sign In</a></p>
+      </form>
+
+      <!-- ============ PROFILE ============ -->
+      <div class="view" id="view-profile" hidden>
+        <h1 class="view-title" data-i18n="profile_title">Your account</h1>
+        <div class="profile-card">
+          <div class="profile-avatar" id="profileAvatar">A</div>
+          <div class="profile-name" id="profileName">—</div>
+          <div class="profile-email" id="profileEmail">—</div>
+          <div class="profile-role" id="profileRole"></div>
+        </div>
+        <a class="btn-primary" href="index.html" data-i18n="open_app">Open the App</a>
+        <button type="button" class="btn-ghost" id="logoutBtn" data-i18n="signout">Sign Out</button>
+      </div>
+
+      <footer class="auth-foot">
+        <span data-i18n="powered">Powered by Aiba Dynamics</span>
+        <span>Al-Wilayat · ولايت</span>
+      </footer>
+    </section>
+  </main>
+
+  <script src="js/auth.js?v=20260621-lang6"></script>
+</body>
+</html>

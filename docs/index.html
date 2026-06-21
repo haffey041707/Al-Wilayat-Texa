@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+  <meta name="theme-color" content="#02040a" />
+  <meta name="description" content="Wilayat — Complete Shia Islamic Super App: Quran, Hadith, Dua, Ziyarat, Prayer times, Qibla, Calendar, Ahlul Bayt, AI assistant and more." />
+  <title>Wilayat · ولايت</title>
+
+  <!-- Arabic typeface for Quran / Arabic text -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/styles.css?v=20260621-restore2" />
+</head>
+<body data-theme="dark" dir="ltr">
+  <div class="bg-aurora"></div>
+  <div class="bg-stars"></div>
+
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="logo"><img src="assets/al-wilayat-logo.jpeg" alt="Al-Wilayat logo" /></div>
+        <div>
+          <div class="name">Al-Wilayat</div>
+          <div class="tag" data-i18n="app_tag">Powered by Aiba Dynamics</div>
+        </div>
+      </div>
+      <nav id="nav"><!-- nav items injected --></nav>
+      <!-- Signed-in account + sign out (populated by the inline script below) -->
+      <div class="account" id="account" hidden>
+        <div class="account-info">
+          <div class="account-avatar" id="accountAvatar">A</div>
+          <div class="account-meta">
+            <div class="account-name" id="accountName">—</div>
+            <button type="button" class="account-signout" id="signOutBtn">Sign out</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+      <header class="topbar glass">
+        <div class="icon-btn menu-toggle" id="menuBtn">☰</div>
+        <a class="topbar-logo" id="topbarLogo" onclick="go('home')" title="Home"><img src="assets/al-wilayat-logo.jpeg" alt="Al-Wilayat" /></a>
+        <label class="search">
+          <span class="search-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></span>
+          <input data-i18n-ph="search" placeholder="Search…" aria-label="search" />
+          <button class="search-mark" id="searchBackBtn" type="button" aria-label="Clear search" title="Clear search">×</button>
+        </label>
+        <div class="icon-btn" id="settingsBtn" title="Settings" aria-label="Settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+        <div class="lang-pick">
+          <div class="icon-btn" id="langBtn"><span class="lang-globe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span><span id="langLabel">English</span></div>
+          <div class="glass lang-menu" id="langMenu">
+            <button data-lang="en">English</button>
+            <button data-lang="ar">العربية</button>
+            <button data-lang="ur">اردو</button>
+            <button data-lang="fa">فارسی</button>
+            <button data-lang="az">Azərbaycanca</button>
+            <button data-lang="ks">کٲشُر</button>
+            <button data-lang="prs">دری فارسی</button>
+            <button data-lang="ms">Bahasa Melayu</button>
+            <button data-lang="sg">Singapore English</button>
+          </div>
+        </div>
+      </header>
+
+      <div id="views"><!-- views injected --></div>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- Phone bottom navigation (primary modules) -->
+  <nav class="bottom-nav" id="bottomNav"><!-- injected --></nav>
+
+  <!-- Phone settings sheet: the rest of the modules + account -->
+  <div class="settings-backdrop" id="settingsBackdrop"></div>
+  <aside class="settings-panel glass" id="settingsPanel" aria-label="Settings">
+    <div class="settings-head">
+      <strong class="settings-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> <span data-i18n="nav_settings">Settings</span></strong>
+      <button class="icon-btn" id="settingsClose" aria-label="Close">×</button>
+    </div>
+    <div class="settings-grid" id="settingsGrid"><!-- injected --></div>
+    <div class="settings-account" id="settingsAccount" hidden>
+      <div class="sa-avatar" id="saAvatar">A</div>
+      <div class="sa-meta"><div class="sa-name" id="saName">—</div></div>
+      <button class="sa-signout" id="saSignout" type="button">Sign out</button>
+    </div>
+  </aside>
+
+  <script>window.WILAYAT_STATIC=true;</script>
+  <script src="js/data.js?v=20260621-restore1"></script>
+  <script src="js/app.js?v=20260621-restore4"></script>
+  <!-- Show the signed-in user (sidebar + settings sheet) + handle sign out. -->
+  <script>
+    (function () {
+      var s; try { s = JSON.parse(localStorage.getItem("wilayat.auth") || "null"); } catch (e) { s = null; }
+      if (s && s.user) {
+        var name = (s.user.full_name || "").trim();
+        var initial = (name || "?").charAt(0).toUpperCase();
+        var display = name || s.user.email;
+        var box = document.getElementById("account");
+        if (box) { document.getElementById("accountName").textContent = display; document.getElementById("accountAvatar").textContent = initial; box.hidden = false; }
+        var sBox = document.getElementById("settingsAccount");
+        if (sBox) { document.getElementById("saName").textContent = display; document.getElementById("saAvatar").textContent = initial; sBox.hidden = false; }
+      }
+      function signOut() { localStorage.removeItem("wilayat.auth"); location.replace("auth.html"); }
+      var b1 = document.getElementById("signOutBtn"); if (b1) b1.addEventListener("click", signOut);
+      var b2 = document.getElementById("saSignout"); if (b2) b2.addEventListener("click", signOut);
+    })();
+  </script>
+</body>
+</html>
