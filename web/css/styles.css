@@ -637,3 +637,7 @@ body[dir="rtl"] .list-item:hover { transform: translateX(-5px); }
    so they don't appear mirrored when the app language is Arabic/Urdu/etc. */
 .account-info, .settings-account { direction: ltr; }
 .account-name, .sa-name { text-align: start; }
+
+/* Recitation play / pause icons (SVG, replaces ▶/⏸ emoji) */
+.picon { width: 1.05em; height: 1.05em; vertical-align: -0.18em; display: inline-block; }
+.chip .picon { width: 14px; height: 14px; vertical-align: -0.1em; }

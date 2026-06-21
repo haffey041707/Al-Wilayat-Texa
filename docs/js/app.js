@@ -163,6 +163,11 @@ const contentLang = () => CONTENT_LANG[State.lang] || "en";
 // Quran/verse translation field (verse data carries en/ur/fa/az/ms; ks→ur, prs→fa, sg→en).
 const trField = () => ({ en: "en", sg: "en", az: "az", ms: "ms", ur: "ur", ks: "ur", fa: "fa", prs: "fa", ar: null }[State.lang] ?? null);
 let currentAudio = null;
+// Clean play / pause glyphs (SVG, not emoji) for the recitation buttons.
+const ICON_PLAY = '<svg class="picon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+const ICON_PAUSE = '<svg class="picon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1.2"/><rect x="14" y="5" width="4" height="14" rx="1.2"/></svg>';
+// Western → Arabic-Indic digits (for numbering shown beside Arabic text).
+const arDigits = (s) => String(s).replace(/[0-9]/g, (d) => "٠١٢٣٤٥٦٧٨٩"[+d]);
 function playAudio(url) {
   if (!url) return toast(t("coming_soon"));
   if (currentAudio) currentAudio.pause();
@@ -176,17 +181,17 @@ function playAyah(btn, url) {
   if (!url) return toast(t("coming_soon"));
   if (currentAudio && _ayahBtn === btn && !currentAudio.paused) {
     currentAudio.pause();
-    btn.textContent = "▶";
+    btn.innerHTML = ICON_PLAY;
     return;
   }
   if (currentAudio) currentAudio.pause();
-  if (_ayahBtn && _ayahBtn !== btn) _ayahBtn.textContent = "▶";
+  if (_ayahBtn && _ayahBtn !== btn) _ayahBtn.innerHTML = ICON_PLAY;
   if (typeof stopSurahAudio === "function") stopSurahAudio();
   currentAudio = new Audio(url);
   _ayahBtn = btn;
-  btn.textContent = "⏸";
-  currentAudio.onended = () => { if (_ayahBtn === btn) btn.textContent = "▶"; };
-  currentAudio.play().catch(() => { btn.textContent = "▶"; toast(t("audio_unavailable")); });
+  btn.innerHTML = ICON_PAUSE;
+  currentAudio.onended = () => { if (_ayahBtn === btn) btn.innerHTML = ICON_PLAY; };
+  currentAudio.play().catch(() => { btn.innerHTML = ICON_PLAY; toast(t("audio_unavailable")); });
 }
 
 // ---------------- i18n + direction ----------------
@@ -518,7 +523,7 @@ async function renderQuran(v) {
 function verseBlock(a, surahN) {
   const tf = trField();
   const tr = tf ? `<div class="tr">${a[tf] || ""}</div>` : "";
-  const audio = a.audio ? `<button class="chip" onclick="event.stopPropagation();playAyah(this,'${a.audio}')">▶</button>` : "";
+  const audio = a.audio ? `<button class="chip" onclick="event.stopPropagation();playAyah(this,'${a.audio}')">${ICON_PLAY}</button>` : "";
   const taf = surahN ? `<button class="chip" onclick="event.stopPropagation();toggleTafsir(${surahN},${a.n},this)">📚 ${localizedText("Tafsir al-Mizan")}</button>` : "";
   return `<div class="ayah-block">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
@@ -568,7 +573,7 @@ async function openSurah(n) {
     body.innerHTML = `
       <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap">
         <button class="btn ghost" onclick="renderQuran(document.getElementById('view-quran'))">← ${t("surahs")}</button>
-        <button class="btn" id="surahPlayBtn" onclick="playSurah(${n})">▶ ${t("listen")}</button>
+        <button class="btn" id="surahPlayBtn" onclick="playSurah(${n})">${ICON_PLAY} ${t("listen")}</button>
         <button class="btn ghost" onclick="toast(t('saved'))">🔖 ${t("bookmark")}</button>
       </div>
       <div class="card" style="text-align:center;margin-bottom:16px">
@@ -586,7 +591,7 @@ async function openSurah(n) {
 let _surahPlay = { queue: [], i: 0, active: false };
 function setSurahPlayBtn(playing) {
   const btn = el("#surahPlayBtn");
-  if (btn) btn.innerHTML = playing ? `⏸ ${t("pause")}` : `▶ ${t("listen")}`;
+  if (btn) btn.innerHTML = playing ? `${ICON_PAUSE} ${t("pause")}` : `${ICON_PLAY} ${t("listen")}`;
 }
 function stopSurahAudio() {
   if (currentAudio) currentAudio.pause();
@@ -608,7 +613,7 @@ function playSurah(n) {
   }
   const q = window._surahAudio || [];
   if (!q.length) return toast(t("coming_soon"));
-  if (_ayahBtn) { _ayahBtn.textContent = "▶"; _ayahBtn = null; }
+  if (_ayahBtn) { _ayahBtn.innerHTML = ICON_PLAY; _ayahBtn = null; }
   _surahPlay = { queue: q, i: 0, active: true };
   setSurahPlayBtn(true);
   _surahNext();
@@ -705,9 +710,11 @@ async function openBook(id, page = 1) {
     const d = await api(`/hadith/book/${id}?page=${page}&size=20`);
     _book.total = d.total;
     const pages = Math.ceil(d.total / d.size);
+    // Arabic-edition books use Arabic-Indic numerals in the chapter/order line.
+    const arN = (s) => d.edition === "ar" ? arDigits(s) : s;
     const items = d.hadiths.map((h) => `
       <div class="ayah-block">
-        <div class="translit" style="margin:0 0 8px">${localizedText(h.category || "")} ${h.chapter ? "· " + localizedText(h.chapter) : ""}</div>
+        <div class="translit" style="margin:0 0 8px">${arN(localizedText(h.category || ""))} ${h.chapter ? "· " + arN(localizedText(h.chapter)) : ""}</div>
         ${h.ar ? `<div class="ar">${h.ar}</div>` : ""}
         ${translatedContent(h.en) ? `<div class="tr">${translatedContent(h.en)}</div>` : ""}
         ${h.grading ? `<div class="translit">⚖️ ${localizedText(h.grading)}</div>` : ""}
@@ -1893,7 +1900,7 @@ function renderMedia(v) {
     <div class="list-item" onclick="toast('▶ ' + t('play'))">
       <div class="badge-num">${m.emoji}</div>
       <div class="meta"><div class="t">${localizedText(m.en)}</div><div class="s">${localizedText(m.type)} · ${localizedText(m.by)} · ${m.dur}</div></div>
-      <div style="font-size:20px">▶</div>
+      <div style="font-size:20px">${ICON_PLAY}</div>
     </div>`).join("");
 }
 
