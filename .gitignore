@@ -1,0 +1,31 @@
+# Secrets / environment — never commit real keys
+.env
+*.env
+!*.env.example
+backend/.env
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# Node / web
+node_modules/
+dist/
+.next/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# Auth database (local accounts)
+*.db
+backend/app/data/users.db
+
+# Large, re-downloadable content (fetch via backend/ingest/*.py — see README)
+backend/app/data/quran/
+backend/app/data/hadith/
+backend/app/data/tafsir/

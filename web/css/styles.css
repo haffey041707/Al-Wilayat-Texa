@@ -1,0 +1,639 @@
+/* ============================================================
+   Wilayat — Shia Islamic Super App
+   Design System: Glassmorphism · Animated · Dark/Light · RTL
+   ============================================================ */
+
+:root {
+  /* Brand */
+  --emerald: #0b63ce;
+  --emerald-2: #35a4ff;
+  --gold: #1f7bff;
+  --gold-2: #8fd0ff;
+  --royal: #123d91;
+  --plum: #061b46;
+  --wilayat-gold: #d4af37;
+
+  /* Dark theme (default) */
+  --bg-0: #02040a;
+  --bg-1: #06142d;
+  --bg-2: #082354;
+  --text-0: #d8d8d8;
+  --text-1: #c0c0c0;
+  --text-2: #9f9f9f;
+  --glass-bg: rgba(7, 28, 70, 0.54);
+  --glass-brd: rgba(64, 154, 255, 0.18);
+  --glass-hi: rgba(108, 184, 255, 0.34);
+  --shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+  --blur: 18px;
+
+  /* Motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --fast: 0.18s;
+  --med: 0.35s;
+  --slow: 0.6s;
+
+  --radius: 22px;
+  --radius-sm: 14px;
+}
+
+[data-theme="light"] {
+  --bg-0: #02040a;
+  --bg-1: #06142d;
+  --bg-2: #082354;
+  --text-0: #d8d8d8;
+  --text-1: #c0c0c0;
+  --text-2: #9f9f9f;
+  --glass-bg: rgba(7, 28, 70, 0.54);
+  --glass-brd: rgba(64, 154, 255, 0.18);
+  --glass-hi: rgba(108, 184, 255, 0.34);
+  --shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: "Segoe UI", "Inter", system-ui, -apple-system, sans-serif;
+  background: var(--bg-0);
+  color: var(--text-0);
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background var(--med) var(--ease), color var(--med) var(--ease);
+}
+
+body[dir="rtl"] {
+  font-family: "Segoe UI", "Tahoma", "Noto Naskh Arabic", "Amiri", serif;
+}
+
+/* ---------- Animated aurora background ---------- */
+.bg-aurora {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(40% 50% at 15% 20%, rgba(0, 93, 214, 0.42), transparent 60%),
+    radial-gradient(45% 55% at 85% 15%, rgba(36, 144, 255, 0.34), transparent 60%),
+    radial-gradient(50% 50% at 80% 85%, rgba(7, 32, 92, 0.72), transparent 60%),
+    radial-gradient(45% 45% at 20% 90%, rgba(0, 13, 34, 0.92), transparent 60%),
+    var(--bg-0);
+  animation: auroraShift 18s ease-in-out infinite alternate;
+}
+@keyframes auroraShift {
+  0%   { filter: brightness(1) saturate(1); transform: scale(1); }
+  100% { filter: brightness(1.18) saturate(1.25); transform: scale(1.08); }
+}
+
+/* Floating particles layer */
+.bg-stars {
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background-image:
+    radial-gradient(2px 2px at 20% 30%, rgba(126, 196, 255, .48), transparent),
+    radial-gradient(1px 1px at 60% 70%, rgba(65, 157, 255, .42), transparent),
+    radial-gradient(1.5px 1.5px at 80% 20%, rgba(10, 84, 196, .52), transparent),
+    radial-gradient(1px 1px at 35% 80%, rgba(148, 210, 255, .34), transparent);
+  background-size: 600px 600px, 500px 500px, 700px 700px, 450px 450px;
+  animation: drift 60s linear infinite;
+  opacity: .6;
+}
+@keyframes drift { to { background-position: 600px 300px, -500px 250px, 350px -700px, -450px 400px; } }
+
+/* ---------- Glass primitives ---------- */
+.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-brd);
+  -webkit-backdrop-filter: blur(var(--blur)) saturate(140%);
+  backdrop-filter: blur(var(--blur)) saturate(140%);
+  box-shadow: var(--shadow);
+  border-radius: var(--radius);
+}
+.glass-hi { border-top-color: var(--glass-hi); border-left-color: var(--glass-hi); }
+
+/* ---------- App shell ---------- */
+.app { display: flex; min-height: 100vh; }
+
+/* Sidebar */
+.sidebar {
+  width: 264px;
+  flex-shrink: 0;
+  padding: 22px 16px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 12px;
+  border-radius: var(--radius);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-brd);
+  -webkit-backdrop-filter: blur(var(--blur));
+  backdrop-filter: blur(var(--blur));
+  scrollbar-width: thin;
+}
+.brand { display: flex; align-items: center; gap: 12px; padding: 6px 8px 18px; }
+.brand .logo {
+  width: 46px; height: 46px; border-radius: 14px;
+  display: grid; place-items: center; overflow: hidden;
+  background: var(--bg-0);
+  box-shadow: 0 8px 22px rgba(31, 123, 255, .4);
+  animation: pulseGlow 3.5s ease-in-out infinite;
+}
+.brand .logo img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+@keyframes pulseGlow {
+  0%,100% { box-shadow: 0 8px 22px rgba(31, 123, 255, .35); }
+  50%     { box-shadow: 0 8px 34px rgba(53, 164, 255, .65); }
+}
+.brand .name { color: var(--wilayat-gold); font-size: 21px; font-weight: 800; letter-spacing: .5px; }
+.brand .name span { color: inherit; }
+.brand .tag {
+  margin-top: 2px;
+  font-size: 10px;
+  line-height: 1.25;
+  color: var(--text-2);
+  letter-spacing: .4px;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.nav-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 14px; border-radius: var(--radius-sm);
+  color: var(--text-1); cursor: pointer; font-size: 14.5px; font-weight: 600;
+  border: 1px solid transparent;
+  transition: all var(--fast) var(--ease);
+  position: relative; overflow: hidden;
+}
+.nav-item .ic { font-size: 19px; width: 24px; text-align: center; }
+.nav-item:hover { color: var(--text-0); background: var(--glass-bg); transform: translateX(4px); }
+body[dir="rtl"] .nav-item:hover { transform: translateX(-4px); }
+.nav-item.active {
+  color: var(--text-0);
+  background: linear-gradient(135deg, rgba(0, 93, 214, .30), rgba(10, 34, 84, .42));
+  border-color: var(--glass-hi);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.05);
+}
+.nav-item.active::before {
+  content: ""; position: absolute; inset-inline-start: 0; top: 18%; height: 64%; width: 3px;
+  border-radius: 3px; background: linear-gradient(var(--gold-2), var(--emerald-2));
+}
+
+/* Main */
+.main { flex: 1; padding: 14px 26px 60px; max-width: 100%; }
+.topbar {
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 18px; margin-bottom: 22px;
+  position: sticky; top: 12px; z-index: 30;
+}
+.search {
+  flex: 1; display: flex; align-items: center; gap: 10px;
+  padding: 11px 16px; border-radius: 999px;
+  background: var(--glass-bg); border: 1px solid var(--glass-brd);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+}
+.search input { flex: 1; background: none; border: none; outline: none; color: var(--text-0); font-size: 14.5px; }
+.search input::placeholder { color: var(--text-2); }
+.search-mark {
+  width: 24px;
+  height: 24px;
+  display: none;
+  place-items: center;
+  flex-shrink: 0;
+  border: 1px solid var(--glass-brd);
+  border-radius: 50%;
+  background: rgba(31, 123, 255, .16);
+  color: var(--text-0);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+}
+.search-mark.show { display: grid; }
+.search-mark:hover { border-color: var(--glass-hi); background: rgba(31, 123, 255, .28); }
+
+.icon-btn {
+  width: 44px; height: 44px; flex-shrink: 0;
+  display: grid; place-items: center; cursor: pointer; font-size: 18px;
+  border-radius: 14px; color: var(--text-1);
+  background: var(--glass-bg); border: 1px solid var(--glass-brd);
+  transition: all var(--fast) var(--ease);
+}
+.icon-btn:hover { color: var(--text-0); transform: translateY(-2px); border-color: var(--glass-hi); }
+
+.lang-pick { position: relative; }
+/* language button holds a text label ("English"), so it can't be a fixed 44px square */
+#langBtn { width: auto; min-width: 44px; padding: 0 14px; font-size: 14px; white-space: nowrap; }
+.lang-menu {
+  position: absolute; top: 52px; inset-inline-end: 0; min-width: 150px;
+  padding: 6px; display: none; flex-direction: column; gap: 2px; z-index: 50;
+}
+.lang-menu.open { display: flex; animation: popIn var(--fast) var(--ease); }
+.lang-menu button {
+  text-align: start; padding: 10px 12px; border-radius: 10px; border: none;
+  background: none; color: var(--text-1); cursor: pointer; font-size: 14px;
+}
+.lang-menu button:hover { background: var(--glass-bg); color: var(--text-0); }
+
+/* ---------- Sections / routing ---------- */
+.view { display: none; animation: fadeUp var(--med) var(--ease); }
+.view.active { display: block; }
+
+.page-head { margin-bottom: 22px; }
+.page-head h1 { font-size: 30px; font-weight: 800; letter-spacing: .3px; }
+.page-head p { color: var(--text-1); margin-top: 6px; font-size: 14.5px; }
+.screen-back {
+  width: 36px;
+  height: 36px;
+  display: inline-grid;
+  place-items: center;
+  margin-bottom: 12px;
+  border-radius: 50%;
+  border: 1px solid var(--glass-brd);
+  background: var(--glass-bg);
+  color: var(--text-0);
+  font-size: 18px;
+  cursor: pointer;
+}
+.screen-back:hover { border-color: var(--glass-hi); background: rgba(31, 123, 255, .18); }
+.eyebrow { color: var(--text-1); font-size: 12px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; }
+.wilayat-mark { color: var(--wilayat-gold); }
+
+/* ---------- Hero ---------- */
+.hero {
+  position: relative; overflow: hidden;
+  aspect-ratio: 1600 / 711;
+  min-height: 0;
+  padding: 34px; margin-bottom: 28px; border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, .72), rgba(2, 8, 24, .48) 52%, rgba(0, 0, 0, .56)),
+    linear-gradient(0deg, rgba(0, 0, 0, .56), rgba(0, 0, 0, .22) 50%, rgba(0, 0, 0, .52)),
+    url("../assets/al-wilayat-banner.jpeg");
+  background-color: var(--bg-0);
+  background-size: 100% 100%, 100% 100%, contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  border: 1px solid var(--glass-hi);
+}
+.kalima-calligraphy {
+  width: min(980px, 94%);
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: 10px 0;
+  pointer-events: none;
+  user-select: none;
+}
+.kalima-calligraphy img {
+  display: block;
+  width: 100%;
+  max-height: 168px;
+  object-fit: contain;
+  pointer-events: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, .85));
+}
+
+/* ---------- Module grid ---------- */
+.grid { display: grid; gap: 18px; }
+.grid.modules { grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); }
+
+.module-card {
+  position: relative; overflow: hidden; cursor: pointer;
+  padding: 22px; border-radius: var(--radius);
+  background: var(--glass-bg); border: 1px solid var(--glass-brd);
+  -webkit-backdrop-filter: blur(var(--blur)); backdrop-filter: blur(var(--blur));
+  transition: transform var(--med) var(--ease), border-color var(--med), box-shadow var(--med);
+  opacity: 0; transform: translateY(18px);
+  animation: cardIn var(--slow) var(--ease) forwards;
+}
+@keyframes cardIn { to { opacity: 1; transform: translateY(0); } }
+.module-card:hover {
+  transform: translateY(-8px) scale(1.015);
+  border-color: var(--glass-hi);
+  box-shadow: 0 26px 60px rgba(0,0,0,.4);
+}
+.module-card .m-ic {
+  width: 54px; height: 54px; border-radius: 16px; display: grid; place-items: center;
+  font-size: 26px; margin-bottom: 16px;
+  background: linear-gradient(135deg, rgba(53, 164, 255, .18), rgba(6, 27, 70, .34));
+  border: 1px solid var(--glass-hi);
+  transition: transform var(--med) var(--ease);
+}
+.module-card:hover .m-ic { transform: rotate(-8deg) scale(1.12); }
+.module-card h3 { font-size: 16.5px; font-weight: 700; margin-bottom: 5px; }
+.module-card p { font-size: 12.5px; color: var(--text-2); line-height: 1.5; }
+.module-card .glow {
+  position: absolute; inset-inline-end: -40px; top: -40px; width: 130px; height: 130px;
+  border-radius: 50%; filter: blur(38px); opacity: .0; transition: opacity var(--med);
+  background: radial-gradient(var(--accent, var(--emerald)), transparent 70%);
+}
+.module-card:hover .glow { opacity: .7; }
+
+/* ---------- Generic content cards ---------- */
+.card { padding: 22px; border-radius: var(--radius); background: var(--glass-bg); border: 1px solid var(--glass-brd); -webkit-backdrop-filter: blur(var(--blur)); backdrop-filter: blur(var(--blur)); }
+.card + .card { margin-top: 16px; }
+.stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px,1fr)); gap: 16px; margin-bottom: 26px; }
+.stat { padding: 18px; border-radius: var(--radius-sm); background: var(--glass-bg); border: 1px solid var(--glass-brd); }
+.stat .big { font-size: 28px; font-weight: 800; color: var(--text-0); }
+.stat .lbl { color: var(--text-2); font-size: 12.5px; margin-top: 4px; }
+
+/* List item */
+.list-item {
+  display: flex; align-items: center; gap: 16px; padding: 14px 18px;
+  border-radius: var(--radius-sm); background: var(--glass-bg); border: 1px solid var(--glass-brd);
+  cursor: pointer; transition: all var(--fast) var(--ease);
+}
+.list-item:hover { transform: translateX(5px); border-color: var(--glass-hi); }
+body[dir="rtl"] .list-item:hover { transform: translateX(-5px); }
+.list-item + .list-item { margin-top: 10px; }
+.badge-num {
+  width: 42px; height: 42px; flex-shrink: 0; display: grid; place-items: center;
+  border-radius: 12px; font-weight: 800; font-size: 14px;
+  background: linear-gradient(135deg, rgba(0, 93, 214, .36), rgba(6, 22, 58, .62));
+  border: 1px solid var(--glass-hi);
+}
+.list-item .meta { flex: 1; }
+.list-item .meta .t { font-weight: 700; font-size: 15px; }
+.list-item .meta .s { color: var(--text-2); font-size: 12.5px; margin-top: 2px; }
+.list-item .ar { font-family: "Amiri","Noto Naskh Arabic",serif; font-size: 20px; color: var(--text-0); direction: rtl; }
+
+/* Arabic verse block */
+.ayah-block { padding: 20px; border-radius: var(--radius-sm); background: var(--glass-bg); border: 1px solid var(--glass-brd); margin-bottom: 14px; }
+.ayah-block .num { display:inline-grid; place-items:center; min-width: 28px; height: 28px; padding: 0 6px; border-radius: 50%; font-size: 12px; font-weight: 800; background: var(--emerald); color: var(--text-0); margin-inline-end: 10px; }
+.ayah-block .ar { font-family: "Amiri","Noto Naskh Arabic",serif; font-size: 30px; line-height: 2.1; text-align: right; direction: rtl; color: var(--text-0); }
+.ayah-block .tr { color: var(--text-1); margin-top: 12px; font-size: 15px; line-height: 1.7; }
+.ayah-block .translit { color: var(--text-2); font-style: italic; margin-top: 6px; font-size: 13.5px; }
+
+/* Pills / chips */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.chip {
+  padding: 8px 16px; border-radius: 999px; font-size: 13px; font-weight: 600; cursor: pointer;
+  background: var(--glass-bg); border: 1px solid var(--glass-brd); color: var(--text-1);
+  transition: all var(--fast) var(--ease);
+}
+.chip:hover { color: var(--text-0); }
+.chip.active { background: linear-gradient(135deg, var(--emerald), var(--royal)); color: var(--text-0); border-color: transparent; }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+  padding: 12px 22px; border-radius: 14px; font-weight: 700; font-size: 14px; border: none;
+  color: var(--text-0); background: linear-gradient(135deg, var(--gold-2), var(--gold));
+  box-shadow: 0 10px 26px rgba(31, 123, 255, .35); transition: all var(--fast) var(--ease);
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(53, 164, 255, .5); }
+.btn.ghost { background: var(--glass-bg); color: var(--text-0); border: 1px solid var(--glass-brd); box-shadow: none; }
+
+/* ---------- Tasbih ---------- */
+.tasbih-wrap { display: grid; place-items: center; gap: 24px; padding: 30px 0; }
+.tasbih-ring {
+  width: 240px; height: 240px; border-radius: 50%; display: grid; place-items: center;
+  cursor: pointer; user-select: none; position: relative;
+  background: radial-gradient(circle at 30% 25%, rgba(53, 164, 255, .14), transparent 60%), var(--glass-bg);
+  border: 2px solid var(--glass-hi); box-shadow: var(--shadow);
+  transition: transform var(--fast) var(--ease);
+}
+.tasbih-ring:active { transform: scale(.94); }
+.tasbih-ring .count { font-size: 72px; font-weight: 800; color: var(--text-0); }
+.tasbih-ring .dhikr { font-family:"Amiri",serif; font-size: 26px; color: var(--text-0); direction: rtl; }
+.tasbih-ring::after {
+  content:""; position:absolute; inset:-2px; border-radius:50%; padding:2px;
+  background: conic-gradient(var(--emerald) var(--ring,0deg), transparent 0deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+}
+
+/* ---------- Qibla compass ---------- */
+.compass {
+  width: 260px; height: 260px; margin: 24px auto; border-radius: 50%; position: relative;
+  background: var(--glass-bg); border: 2px solid var(--glass-hi); box-shadow: var(--shadow);
+  display: grid; place-items: center;
+}
+.compass .needle {
+  width: 7px; height: 116px; border-radius: 6px; position: absolute; z-index: 1;
+  background: linear-gradient(var(--gold-2) 0 50%, var(--text-2) 50% 100%);
+  transform-origin: center; transition: transform .8s var(--ease);
+}
+.compass .needle::before {
+  content: "";
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 14px solid var(--gold-2);
+}
+.compass .kaaba { position:absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 22px; z-index: 2; pointer-events: none; }
+.qibla-facing {
+  display: none; margin: 12px auto 0; width: fit-content;
+  padding: 7px 16px; border-radius: 999px; font-weight: 700; font-size: 14px;
+  color: var(--text-0); background: linear-gradient(135deg, var(--emerald), var(--emerald-2));
+  box-shadow: 0 6px 18px rgba(31, 123, 255, .45);
+}
+.qibla-facing.on { display: block; animation: popIn var(--fast) var(--ease); }
+.compass .deg { position:absolute; font-size: 12px; color: var(--text-2); font-weight: 700; }
+.compass .N { top: 8px; left: 50%; transform: translateX(-50%); }
+.compass .S { bottom: 8px; left: 50%; transform: translateX(-50%); }
+.compass .E { inset-inline-end: 12px; top: 50%; transform: translateY(-50%); }
+.compass .W { inset-inline-start: 12px; top: 50%; transform: translateY(-50%); }
+
+/* ---------- Prayer times ---------- */
+.prayer-row { display: flex; align-items: center; justify-content: space-between; padding: 16px 18px; border-radius: var(--radius-sm); background: var(--glass-bg); border: 1px solid var(--glass-brd); }
+.prayer-row + .prayer-row { margin-top: 10px; }
+.prayer-row.next { border-color: var(--gold); background: linear-gradient(135deg, rgba(31, 123, 255, .20), transparent); }
+.prayer-row .pn { display:flex; align-items:center; gap:14px; font-weight:700; font-size:15.5px; }
+.prayer-row .pt { font-size: 18px; font-weight: 800; font-variant-numeric: tabular-nums; }
+
+/* ---------- AI Assistant ---------- */
+.chat { display:flex; flex-direction:column; gap:14px; min-height: 130px; max-height: 56vh; overflow-y: auto; padding-right: 4px; }
+.bubble { max-width: 78%; padding: 14px 18px; border-radius: 18px; line-height:1.6; font-size:14.5px; animation: fadeUp var(--med) var(--ease); }
+.bubble.user { align-self: flex-end; background: linear-gradient(135deg,var(--emerald),var(--royal)); color:var(--text-0); border-bottom-right-radius:6px; }
+.bubble.ai { align-self: flex-start; background: var(--glass-bg); border:1px solid var(--glass-brd); border-bottom-left-radius:6px; }
+.bubble .ref { display:inline-block; margin-top:8px; font-size:12px; color:var(--text-1); border-top:1px solid var(--glass-brd); padding-top:6px; }
+.chat-input { display:flex; gap:10px; margin-top:16px; }
+.chat-input input { flex:1; padding:14px 18px; border-radius:14px; background:var(--glass-bg); border:1px solid var(--glass-brd); color:var(--text-0); outline:none; font-size:14.5px; }
+
+/* ---------- Calendar ---------- */
+.cal-grid { display:grid; grid-template-columns: repeat(7,1fr); gap:8px; }
+.cal-cell { aspect-ratio:1; display:grid; place-items:center; border-radius:12px; background:var(--glass-bg); border:1px solid transparent; font-weight:600; position:relative; cursor:pointer; transition: all var(--fast) var(--ease); }
+.cal-cell:hover { border-color: var(--glass-hi); }
+.cal-cell.event { border-color: var(--gold); }
+.cal-cell.event::after { content:""; position:absolute; bottom:6px; width:5px; height:5px; border-radius:50%; background:var(--gold); }
+.cal-cell.today { background: linear-gradient(135deg,var(--emerald),var(--royal)); color:var(--text-0); }
+.cal-head { display:grid; grid-template-columns:repeat(7,1fr); gap:8px; margin-bottom:8px; color:var(--text-2); font-size:12px; font-weight:700; text-align:center; }
+
+/* ---------- Loader / toast ---------- */
+.toast {
+  position: fixed; bottom: 26px; inset-inline-start: 50%; transform: translateX(-50%) translateY(140%);
+  padding: 14px 22px; border-radius: 14px; z-index: 999; font-weight: 600; font-size: 14px;
+  background: var(--glass-bg); border: 1px solid var(--glass-hi);
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); box-shadow: var(--shadow);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform var(--med) var(--ease), opacity var(--fast) var(--ease), visibility var(--fast) var(--ease);
+}
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; visibility: visible; }
+
+/* ---------- Animations ---------- */
+@keyframes fadeUp { from { opacity:0; transform: translateY(16px);} to {opacity:1; transform:none;} }
+@keyframes popIn { from { opacity:0; transform: scale(.9) translateY(-6px);} to {opacity:1; transform:none;} }
+
+.stagger > * { opacity:0; animation: cardIn var(--slow) var(--ease) forwards; }
+
+/* ---------- Round logos (sidebar + topbar) ---------- */
+.brand .logo { border-radius: 50%; }
+.brand .logo img { object-position: center; }
+.topbar-logo {
+  display: none; width: 42px; height: 42px; flex-shrink: 0;
+  border-radius: 50%; overflow: hidden; cursor: pointer; background: var(--bg-0);
+  border: 1.5px solid var(--glass-hi);
+  box-shadow: 0 8px 22px rgba(31, 123, 255, .4);
+  animation: pulseGlow 3.5s ease-in-out infinite;
+}
+.topbar-logo img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+
+/* ---------- Icon-only language button + search/settings icons ---------- */
+#langBtn { width: 44px; min-width: 44px; padding: 0; }
+#langLabel { display: none; }
+.lang-globe { display: inline-grid; place-items: center; line-height: 0; }
+.lang-globe svg { width: 20px; height: 20px; }
+#settingsBtn { display: none; }
+#settingsBtn svg { width: 21px; height: 21px; }
+.search-ic { display: inline-grid; place-items: center; flex-shrink: 0; color: var(--text-2); }
+.search-ic svg { width: 18px; height: 18px; display: block; }
+.nav-item .ic { display: inline-grid; place-items: center; width: 24px; height: 24px; }
+.nav-item .ic svg { width: 19px; height: 19px; }
+.modules-empty { text-align: center; color: var(--text-2); margin-top: 14px; }
+
+/* ---------- Sidebar account block ---------- */
+.account { margin-top: auto; padding-top: 12px; border-top: 1px solid var(--glass-brd); }
+.account-info { display: flex; align-items: center; gap: 10px; padding: 6px 8px; }
+.account-avatar {
+  width: 38px; height: 38px; flex-shrink: 0; border-radius: 50%;
+  display: grid; place-items: center; font-weight: 800; font-size: 16px; color: #02040a;
+  background: linear-gradient(135deg, var(--gold-2), var(--gold));
+}
+.account-meta { min-width: 0; }
+.account-name { font-size: 13.5px; font-weight: 600; color: var(--text-0); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.account-signout { margin-top: 2px; padding: 0; border: 0; background: transparent; cursor: pointer; color: var(--text-2); font-size: 12px; text-decoration: underline; }
+.account-signout:hover { color: var(--gold); }
+
+/* ---------- Bottom nav (phone) ---------- */
+.bottom-nav { display: none; }
+.bottom-item {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+  background: none; border: 0; cursor: pointer; color: var(--text-2);
+  padding: 7px 2px; font: inherit; border-radius: 12px;
+  transition: color var(--fast) var(--ease);
+}
+.bottom-item .bi { line-height: 0; }
+.bottom-item .bi svg { width: 23px; height: 23px; transition: transform var(--fast) var(--ease); }
+.bottom-item .bl { font-size: 10px; font-weight: 600; letter-spacing: .2px; }
+.bottom-item.active { color: var(--gold); }
+.bottom-item.active .bi svg { transform: translateY(-2px); }
+
+/* ---------- Full-screen settings sheet ---------- */
+.settings-backdrop { position: fixed; inset: 0; z-index: 110; background: rgba(0,0,0,.55); opacity: 0; pointer-events: none; transition: opacity var(--med) var(--ease); }
+.settings-backdrop.open { opacity: 1; pointer-events: auto; }
+.settings-panel {
+  position: fixed; inset: 0; z-index: 120; border: 0; border-radius: 0; box-shadow: none;
+  display: flex; flex-direction: column;
+  padding: 14px 18px calc(20px + env(safe-area-inset-bottom)); overflow-y: auto;
+  background:
+    radial-gradient(45% 40% at 15% 12%, rgba(0, 93, 214, .28), transparent 60%),
+    radial-gradient(50% 45% at 85% 85%, rgba(7, 32, 92, .55), transparent 60%),
+    var(--bg-0);
+  transform: translateY(100%); transition: transform var(--med) var(--ease);
+}
+.settings-panel.open { transform: translateY(0); }
+.settings-head {
+  position: sticky; top: 0; z-index: 1; display: flex; align-items: center; justify-content: space-between;
+  margin: 0 -18px 16px; padding: 6px 18px 14px; color: var(--text-0); font-size: 18px;
+  border-bottom: 1px solid var(--glass-brd);
+}
+.settings-head .icon-btn { width: 40px; height: 40px; font-size: 22px; }
+.settings-title { display: inline-flex; align-items: center; gap: 8px; }
+.settings-title svg { width: 19px; height: 19px; }
+.settings-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.settings-item {
+  display: flex; flex-direction: column; align-items: center; gap: 9px; padding: 20px 8px;
+  border-radius: 18px; cursor: pointer; font: inherit; font-size: 12.5px; font-weight: 600;
+  color: var(--text-1); text-align: center; background: var(--glass-bg); border: 1px solid var(--glass-brd);
+  transition: border-color var(--fast) var(--ease), transform var(--fast) var(--ease);
+}
+.settings-item .si { line-height: 0; }
+.settings-item .si svg { width: 24px; height: 24px; }
+.settings-item:hover { border-color: var(--glass-hi); transform: translateY(-2px); }
+.settings-account { display: flex; align-items: center; gap: 12px; margin-top: auto; padding: 16px; border: 1px solid var(--glass-brd); border-radius: 16px; background: var(--glass-bg); }
+.sa-avatar { width: 40px; height: 40px; flex-shrink: 0; border-radius: 50%; display: grid; place-items: center; font-weight: 800; color: #02040a; background: linear-gradient(135deg, var(--gold-2), var(--gold)); }
+.sa-meta { flex: 1; min-width: 0; }
+.sa-name { font-size: 14px; font-weight: 600; color: var(--text-0); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sa-signout { padding: 9px 16px; border-radius: 12px; cursor: pointer; font: inherit; font-size: 13px; font-weight: 600; color: var(--text-0); background: rgba(31,123,255,.18); border: 1px solid var(--glass-brd); }
+.sa-signout:hover { border-color: var(--gold); }
+
+/* ---------- Mobile ---------- */
+.menu-toggle { display: none; }
+@media (max-width: 900px) {
+  /* Phone: replace the sidebar drawer with a bottom nav + settings sheet. */
+  .sidebar { display: none; }
+  .menu-toggle { display: none; }
+  .topbar-logo { display: block; }
+  #settingsBtn { display: grid; }
+  .bottom-nav {
+    display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 90;
+    justify-content: space-around; align-items: stretch; gap: 2px;
+    padding: 6px 6px calc(6px + env(safe-area-inset-bottom));
+    background: var(--glass-bg); border-top: 1px solid var(--glass-brd);
+    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  }
+  .main { padding: 12px 16px calc(86px + env(safe-area-inset-bottom)); }
+  .topbar { gap: 8px; padding: 10px 12px; }
+  .screen-back { display: none; }
+  .screen-back.for-settings { display: inline-grid; }
+  .hero { background-position: center center; }
+  .kalima-calligraphy { width: 96%; }
+  .kalima-calligraphy img { max-height: 128px; }
+  .page-head h1 { font-size: 24px; }
+  /* Compact home boxes + stat boxes whenever the phone layout is active. */
+  .grid.modules { grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 12px; }
+  .module-card { padding: 14px; border-radius: 16px; }
+  .module-card .m-ic { width: 42px; height: 42px; font-size: 21px; margin-bottom: 10px; border-radius: 12px; }
+  .module-card h3 { font-size: 14px; margin-bottom: 3px; }
+  .module-card p { font-size: 11.5px; line-height: 1.4; }
+  .stat-row { grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 18px; }
+  .stat { padding: 11px 5px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .stat .big { font-size: 16px; line-height: 1.15; }
+  .stat .lbl { font-size: 9.5px; margin-top: 3px; line-height: 1.2; }
+}
+@media (max-width: 560px) {
+  .grid.modules { grid-template-columns: repeat(2, 1fr); }
+  .module-card p { font-size: 11px; }
+  .stat .big { font-size: 14px; }
+  .stat .lbl { font-size: 9px; }
+  .tasbih-ring { width: 200px; height: 200px; }
+  .kalima-calligraphy img { max-height: 92px; }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: var(--glass-brd); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: var(--glass-hi); }
+
+/* Account blocks read consistently (avatar → name → sign out) in RTL too,
+   so they don't appear mirrored when the app language is Arabic/Urdu/etc. */
+.account-info, .settings-account { direction: ltr; }
+.account-name, .sa-name { text-align: start; }

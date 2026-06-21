@@ -1,0 +1,272 @@
+/* Al-Wilayat — authentication UI
+   Premium Islamic library theme: deep navy blue, white, black & gold.
+   Self-contained (does not depend on styles.css). Mobile-first responsive. */
+
+:root {
+  --navy-0: #02060f;
+  --navy-1: #081b34;
+  --navy-2: #0b1f3a;
+  --navy-3: #102a4c;
+  /* Accent matches the home page (blue, not gold). */
+  --gold:   #2490ff;
+  --gold-2: #6cb8ff;
+  --ink:    #0a0e17;
+  --text-0: #ffffff;
+  --text-1: #cdd8ea;
+  --text-2: #9fb2cf;
+  --line:   rgba(64, 154, 255, .22);
+  --glass:  rgba(255, 255, 255, .04);
+  --danger: #ff6b6b;
+  --ok:     #36d399;
+  --radius: 18px;
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--text-1);
+  /* Same background as the home page: dark base + animated blue aurora. */
+  background:
+    radial-gradient(40% 50% at 15% 20%, rgba(0, 93, 214, 0.42), transparent 60%),
+    radial-gradient(45% 55% at 85% 15%, rgba(36, 144, 255, 0.34), transparent 60%),
+    radial-gradient(50% 50% at 80% 85%, rgba(7, 32, 92, 0.72), transparent 60%),
+    radial-gradient(45% 45% at 20% 90%, rgba(0, 13, 34, 0.92), transparent 60%),
+    #02040a;
+  min-height: 100dvh;
+  display: flex;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Background pattern removed — clean aurora only, like the home page. */
+.bg-pattern { display: none; }
+/* Floating blue particles, matching the home page. */
+.bg-glow {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(2px 2px at 20% 30%, rgba(126, 196, 255, .48), transparent),
+    radial-gradient(1px 1px at 60% 70%, rgba(65, 157, 255, .42), transparent),
+    radial-gradient(1.5px 1.5px at 80% 20%, rgba(10, 84, 196, .52), transparent),
+    radial-gradient(1px 1px at 35% 80%, rgba(148, 210, 255, .34), transparent);
+  background-size: 600px 600px, 500px 500px, 700px 700px, 450px 450px;
+  opacity: .55;
+}
+
+/* ---------------- Layout ---------------- */
+.auth-wrap {
+  position: relative;
+  z-index: 1;
+  margin: auto;
+  width: 100%;
+  max-width: 420px;
+  padding: 16px;
+}
+
+.auth-card {
+  /* Same glass card colour as the home page (rgba(7,28,70,.54)). */
+  background: rgba(7, 28, 70, 0.58);
+  border: 1px solid rgba(64, 154, 255, 0.18);
+  border-radius: 22px;
+  padding: 22px 24px 16px;
+  box-shadow: 0 30px 80px rgba(0,0,0,.55), inset 0 1px 0 rgba(108,184,255,.12);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  animation: rise .5s cubic-bezier(.2,.7,.2,1);
+}
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+/* ---------------- Branding ---------------- */
+.brand { text-align: center; margin-bottom: 12px; }
+.brand-logo {
+  width: 60px; height: 60px; margin: 0 auto 8px;
+  border-radius: 50%; overflow: hidden;          /* round logo */
+  border: 1.5px solid var(--gold);
+  box-shadow: 0 8px 26px rgba(31,123,255,.30);
+  background: var(--navy-2);
+}
+.brand-logo img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+.brand-name {
+  font-weight: 800; font-size: 20px; letter-spacing: .5px;
+  /* Same gold as the home page "Al-Wilayat" title. */
+  color: #d4af37;
+}
+.brand-tag { font-size: 12px; color: var(--text-2); margin-top: 2px; letter-spacing: .4px; }
+
+/* ---------------- Views & typography ---------------- */
+.view-title { color: var(--text-0); font-size: 18.5px; font-weight: 700; margin: 2px 0 3px; text-align: center; }
+.view-sub { color: var(--text-2); font-size: 13px; text-align: center; margin: 0 0 14px; }
+
+/* ---------------- Fields ---------------- */
+.field { display: block; margin-bottom: 10px; }
+.lbl { display: block; font-size: 12px; font-weight: 600; color: var(--text-1); margin-bottom: 4px; letter-spacing: .2px; }
+
+.field input[type="text"],
+.field input[type="email"],
+.field input[type="password"] {
+  width: 100%;
+  padding: 10px 13px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(2,6,15,.5);
+  color: var(--text-0);
+  font-size: 15px;
+  outline: none;
+  transition: border-color .18s, box-shadow .18s, background .18s;
+}
+.field input::placeholder { color: #5e718f; }
+.field input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px rgba(31,123,255,.20);
+  background: rgba(2,6,15,.7);
+}
+.field.invalid input { border-color: var(--danger); box-shadow: 0 0 0 3px rgba(255,107,107,.14); }
+
+.pw-wrap { position: relative; display: block; }
+/* Room for our eye toggle AND the browser's password/save icon, well separated. */
+.pw-wrap input { padding-inline-end: 80px; }
+/* Hide the browser's own reveal/clear buttons (Edge/IE) so they don't double up. */
+.pw-wrap input::-ms-reveal,
+.pw-wrap input::-ms-clear { display: none; }
+.pw-toggle {
+  position: absolute; inset-inline-end: 46px; top: 50%; transform: translateY(-50%);
+  border: 0; background: transparent; cursor: pointer; z-index: 2;
+  color: #ffffff;                 /* white so the eye is clearly visible */
+  font-size: 17px; padding: 7px; line-height: 1; opacity: .9; border-radius: 10px;
+  transition: opacity .15s, background .15s;
+}
+.pw-toggle:hover { opacity: 1; background: rgba(255,255,255,.1); }
+.pw-toggle svg { width: 19px; height: 19px; display: block; }
+
+.err { display: block; min-height: 0; margin-top: 3px; font-size: 11.5px; color: var(--danger); }
+.err:empty { margin-top: 0; }
+
+/* ---------------- Strength meter ---------------- */
+.strength { display: flex; align-items: center; gap: 6px; margin-top: 7px; }
+.strength i {
+  flex: 1; height: 5px; border-radius: 4px; background: rgba(255,255,255,.1);
+  transition: background .2s;
+}
+.strength[data-level="1"] i:nth-child(1) { background: var(--danger); }
+.strength[data-level="2"] i:nth-child(-n+2) { background: #f5a524; }
+.strength[data-level="3"] i:nth-child(-n+3) { background: var(--gold); }
+.strength[data-level="4"] i { background: var(--ok); }
+.strength-label { font-size: 11.5px; color: var(--text-2); min-width: 56px; text-align: end; }
+
+/* ---------------- Rows / links ---------------- */
+.row-between { display: flex; align-items: center; justify-content: space-between; margin: 2px 0 12px; gap: 10px; }
+.check { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; color: var(--text-1); cursor: pointer; user-select: none; }
+.check input { accent-color: var(--gold); width: 16px; height: 16px; }
+
+.link { color: var(--gold-2); text-decoration: none; font-size: 13px; transition: color .15s; }
+.link:hover { color: var(--gold); text-decoration: underline; }
+.link.strong { font-weight: 700; }
+
+/* ---------------- Buttons ---------------- */
+.btn-primary {
+  display: block; width: 100%; text-align: center; text-decoration: none;
+  padding: 12px 16px; border: 0; border-radius: 12px; cursor: pointer;
+  font-size: 15px; font-weight: 700; letter-spacing: .3px;
+  color: #ffffff;
+  background: linear-gradient(135deg, #3aa0ff, #1f7bff);
+  box-shadow: 0 10px 26px rgba(31,123,255,.34);
+  transition: transform .12s, box-shadow .18s, filter .18s;
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 14px 32px rgba(31,123,255,.46); filter: brightness(1.06); }
+.btn-primary:active { transform: translateY(0); }
+.btn-primary[disabled] { opacity: .6; cursor: progress; transform: none; }
+
+.btn-ghost {
+  display: block; width: 100%; margin-top: 10px;
+  padding: 12px; border-radius: 14px; cursor: pointer;
+  background: transparent; border: 1px solid rgba(255,255,255,.16);
+  color: var(--text-1); font-size: 14px; font-weight: 600;
+  transition: background .15s, border-color .15s;
+}
+.btn-ghost:hover { background: rgba(255,255,255,.05); border-color: var(--gold); }
+
+/* ---------------- Divider ---------------- */
+.divider { display: flex; align-items: center; gap: 12px; margin: 12px 0; color: var(--text-2); font-size: 12.5px; }
+.divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--line), transparent); }
+
+.swap { text-align: center; font-size: 13px; color: var(--text-2); margin: 11px 0 2px; }
+
+/* ---------------- Banner ---------------- */
+.banner {
+  border-radius: 12px; padding: 10px 13px; margin-bottom: 12px;
+  font-size: 13px; line-height: 1.4; border: 1px solid transparent;
+}
+.banner.error { color: #ffd9d9; background: rgba(255,107,107,.12); border-color: rgba(255,107,107,.35); }
+.banner.success { color: #c8f7e4; background: rgba(54,211,153,.12); border-color: rgba(54,211,153,.35); }
+.banner.info { color: var(--text-1); background: rgba(31,123,255,.10); border-color: var(--line); }
+
+/* ---------------- Profile ---------------- */
+.profile-card { text-align: center; padding: 12px 0 18px; }
+.profile-avatar {
+  width: 72px; height: 72px; margin: 0 auto 12px; border-radius: 50%;
+  display: grid; place-items: center; font-size: 28px; font-weight: 800; color: var(--ink);
+  background: linear-gradient(135deg, var(--gold-2), var(--gold));
+}
+.profile-name { color: var(--text-0); font-size: 18px; font-weight: 700; }
+.profile-email { color: var(--text-2); font-size: 13.5px; margin-top: 2px; }
+.profile-role {
+  display: inline-block; margin-top: 10px; padding: 3px 12px; border-radius: 999px;
+  font-size: 11.5px; letter-spacing: .5px; text-transform: uppercase;
+  color: var(--gold-2); border: 1px solid var(--line); background: rgba(31,123,255,.08);
+}
+
+/* ---------------- Footer ---------------- */
+.auth-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 12px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,.07);
+  font-size: 11.5px; color: var(--text-2); gap: 10px;
+}
+
+/* ---------------- Responsive ---------------- */
+@media (max-width: 480px) {
+  .auth-wrap { padding: 12px; }
+  .auth-card { padding: 18px 16px 14px; border-radius: 18px; }
+  .view-title { font-size: 18px; }
+}
+/* Very short screens: keep everything visible without scrolling */
+@media (max-height: 720px) {
+  .brand { margin-bottom: 8px; }
+  .brand-logo { width: 48px; height: 48px; margin-bottom: 6px; }
+  .view-sub { margin-bottom: 10px; }
+  .field { margin-bottom: 8px; }
+}
+
+/* ---------------- Language picker + RTL ---------------- */
+.auth-card { position: relative; }
+.auth-lang { position: absolute; top: 12px; inset-inline-end: 12px; z-index: 6; }
+.auth-lang-btn {
+  display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
+  padding: 7px 10px; border-radius: 12px; font: inherit; font-size: 12.5px;
+  color: var(--text-1); background: rgba(2,6,15,.5); border: 1px solid rgba(64,154,255,.2);
+  transition: border-color .15s, color .15s;
+}
+.auth-lang-btn:hover { color: var(--text-0); border-color: var(--gold); }
+.auth-lang-btn svg { width: 18px; height: 18px; }
+.auth-lang-menu {
+  position: absolute; top: 46px; inset-inline-end: 0; min-width: 168px; max-height: 62vh; overflow-y: auto;
+  display: none; flex-direction: column; padding: 6px;
+  background: var(--navy-1); border: 1px solid var(--line); border-radius: 14px;
+  box-shadow: 0 22px 55px rgba(0,0,0,.55);
+}
+.auth-lang-menu.open { display: flex; }
+.auth-lang-menu button {
+  text-align: start; padding: 9px 12px; border: 0; background: transparent; cursor: pointer;
+  color: var(--text-1); border-radius: 9px; font: inherit; font-size: 13.5px; white-space: nowrap;
+}
+.auth-lang-menu button:hover { background: rgba(255,255,255,.06); color: var(--text-0); }
+
+/* Right-to-left languages */
+html[dir="rtl"] body { font-family: "Noto Naskh Arabic", Inter, system-ui, sans-serif; }
+html[dir="rtl"] .auth-foot { flex-direction: row-reverse; }
+/* Brand stays centered; leave room at the top for the language button. */
+.brand { margin-top: 16px; }
