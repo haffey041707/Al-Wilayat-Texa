@@ -464,6 +464,14 @@ const translatedOrEmpty = (str) => {
   return (EN_LIKE_LANGS.includes(State.lang) || out !== (str || "")) ? out : "";
 };
 const translatedContent = (str) => translatedOrEmpty(str);
+// Hadith translation in the current language: use the stored per-language field
+// (ur/fa/az/ms — Kashmiri→ur, Dari→fa) when available; otherwise the English.
+// The Arabic original (h.ar) is never changed.
+function hadithTrans(h) {
+  const f = trField();                       // "ur" | "fa" | "az" | "ms" | "en" | null
+  if (f && f !== "en" && h && h[f]) return h[f];
+  return translatedContent(h && h.en);
+}
 // Surah-name meaning: exact-match table (az/ms) first, else the phrase map.
 const surahMeaning = (m) => {
   const o = typeof QURAN_MEANINGS !== "undefined" ? QURAN_MEANINGS[m] : null;
@@ -717,7 +725,7 @@ async function openBook(id, page = 1) {
       <div class="ayah-block">
         <div class="translit" style="margin:0 0 8px">${localizedText(h.category || "")} ${h.chapter ? "· " + localizedText(h.chapter) : ""}</div>
         ${h.ar ? `<div class="ar">${arHadithText(h.ar)}</div>` : ""}
-        ${translatedContent(h.en) ? `<div class="tr">${translatedContent(h.en)}</div>` : ""}
+        ${hadithTrans(h) ? `<div class="tr">${hadithTrans(h)}</div>` : ""}
         ${h.grading ? `<div class="translit">⚖️ ${localizedText(h.grading)}</div>` : ""}
         ${refLine(h)}
       </div>`).join("");
@@ -755,7 +763,7 @@ async function hadithSearch() {
     body.innerHTML = `<button class="btn ghost" style="margin-bottom:16px" onclick="renderHadith(document.getElementById('view-hadith'))">← ${t("collections")}</button>
       <div class="page-head"><h1 style="font-size:18px">${d.count} ${t("results_for")} "${escapeHtml(q)}"</h1></div>
       ${d.results.map((h) => `<div class="ayah-block">
-        ${h.ar ? `<div class="ar">${arHadithText(h.ar)}</div>` : ""}${translatedContent(h.en) ? `<div class="tr">${translatedContent(h.en)}</div>` : ""}${refLine(h)}</div>`).join("") || `<div class='card'>${t("no_matches")}</div>`}`;
+        ${h.ar ? `<div class="ar">${arHadithText(h.ar)}</div>` : ""}${hadithTrans(h) ? `<div class="tr">${hadithTrans(h)}</div>` : ""}${refLine(h)}</div>`).join("") || `<div class='card'>${t("no_matches")}</div>`}`;
   } catch { body.innerHTML = offlineBanner(); }
 }
 
@@ -849,7 +857,7 @@ async function loadCorpus(path, sel, pendingMsg) {
     box.innerHTML = d.results.slice(0, 80).map((h) => `
       <div class="ayah-block">
         ${h.ar ? `<div class="ar">${arHadithText(h.ar)}</div>` : ""}
-        ${translatedContent(h.en) ? `<div class="tr">${translatedContent(h.en)}</div>` : ""}
+        ${hadithTrans(h) ? `<div class="tr">${hadithTrans(h)}</div>` : ""}
         ${h.grading ? `<div class="translit">⚖️ ${localizedText(h.grading)}</div>` : ""}
         ${refLine(h)}
       </div>`).join("") + (d.count > 80 ? `<div class="card" style="text-align:center;color:var(--text-2)">+${d.count - 80} ${localizedText("more")}</div>` : "");
