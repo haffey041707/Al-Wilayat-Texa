@@ -550,7 +550,7 @@ function verseBlock(a, surahN) {
 // al-Mizan exists in ar/fa/ur/en; map each UI language onto the closest edition
 // (Kashmiri→Urdu, Dari→Farsi; Azerbaijani/Malay/Singapore→English).
 const tafsirEdition = () => "almizan_" +
-  ({ en: "en", sg: "en", ar: "ar", fa: "fa", prs: "fa", ur: "ur", ks: "ur", az: "en", ms: "en" }[State.lang] || "en");
+  ({ en: "en", sg: "en", ar: "ar", fa: "fa", prs: "fa", ur: "ur", ks: "ur", az: "az", ms: "ms" }[State.lang] || "en");
 
 async function toggleTafsir(s, a, btn) {
   const box = btn.closest(".ayah-block").querySelector(".tafsir-box");

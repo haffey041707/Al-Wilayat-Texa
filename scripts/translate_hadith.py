@@ -67,7 +67,7 @@ def translate(text, tl, retries=5):
             except Exception:
                 time.sleep(2 * (attempt + 1))
         if got is None:
-            return None
+            got = c   # keep the original piece rather than dropping the whole chunk
         out.append(got)
     return " ".join(out)
 
