@@ -18,6 +18,7 @@ import sys
 import time
 import urllib.parse
 import urllib.request
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 # macOS' bundled Python often lacks root certs; use certifi if present, else fall
 # back to an unverified context (we're only reading a public translation API).
@@ -29,7 +30,7 @@ except Exception:
 
 HADITH = os.path.join(os.path.dirname(__file__), "..", "backend", "app", "data", "hadith")
 DEFAULT_LANGS = ["ur", "fa", "az", "ms"]
-SAVE_EVERY = 25           # save the book file this often (resumability)
+WORKERS = 20              # concurrent translation requests (speed vs. rate-limits)
 
 
 def _translate_once(text, tl, sl="en"):
@@ -75,36 +76,42 @@ def main():
     langs = [a for a in sys.argv[1:] if a in DEFAULT_LANGS] or DEFAULT_LANGS
     files = [f for f in glob.glob(os.path.join(HADITH, "*.json"))
              if not os.path.basename(f).startswith("_")]
-    # Smallest books first so complete, fully-translated books accumulate fast.
-    files.sort(key=lambda f: len(json.load(open(f, encoding="utf-8")).get("hadiths", [])))
+    # Least-text books first (so many short hadiths complete fast; giant-chapter
+    # books like Peshawar Nights are translated last).
+    def _textsize(fp):
+        d = json.load(open(fp, encoding="utf-8"))
+        return sum(len(h.get("en") or "") for h in d.get("hadiths", []))
+    files.sort(key=_textsize)
     print(f"Translating into {langs} across {len(files)} books\n")
     grand = 0
     for f in files:
         d = json.load(open(f, encoding="utf-8"))
         hadiths = d.get("hadiths", [])
-        todo = sum(1 for h in hadiths if (h.get("en") or "").strip()
-                   and any(not h.get(l) for l in langs))
-        if not todo:
+        # Every (hadith, language) pair that still needs a translation.
+        tasks = [(h, lang, (h.get("en") or "").strip())
+                 for h in hadiths for lang in langs
+                 if (h.get("en") or "").strip() and not h.get(lang)]
+        if not tasks:
             print(f"  ✓ {d.get('name','?')[:34]:34} already done")
             continue
         done = 0
-        for i, h in enumerate(hadiths):
-            en = (h.get("en") or "").strip()
-            if not en:
-                continue
-            for lang in langs:
-                if h.get(lang):
-                    continue
-                tr = translate(en, lang)
+        save = lambda: json.dump(d, open(f, "w", encoding="utf-8"), ensure_ascii=False)
+        with ThreadPoolExecutor(max_workers=WORKERS) as ex:
+            futs = {ex.submit(translate, en, lang): (h, lang) for (h, lang, en) in tasks}
+            for i, fut in enumerate(as_completed(futs)):
+                h, lang = futs[fut]
+                try:
+                    tr = fut.result()
+                except Exception:
+                    tr = None
                 if tr:
                     h[lang] = tr
                     done += 1
                     grand += 1
-                time.sleep(0.05)
-            if done and i % SAVE_EVERY == 0:
-                json.dump(d, open(f, "w", encoding="utf-8"), ensure_ascii=False)
-        json.dump(d, open(f, "w", encoding="utf-8"), ensure_ascii=False)
-        print(f"  • {d.get('name','?')[:34]:34} +{done} translations (total {grand})")
+                if done and i % 200 == 0:
+                    save()                       # periodic checkpoint (resumable)
+        save()
+        print(f"  • {d.get('name','?')[:34]:34} +{done}/{len(tasks)} (total {grand})", flush=True)
     print(f"\nDone. {grand} translations added.")
 
 
