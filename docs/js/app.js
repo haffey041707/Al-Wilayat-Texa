@@ -312,6 +312,7 @@ function appBack(fallback = "home") {
 function go(route, options = {}) {
   route = normalizeRoute(route);
   if (route !== "qibla") stopQiblaCompass();
+  stopSurahAudio();   // stop any Quran recitation when navigating away / going back
   State.route = route;
   els(".nav-item, .bottom-item").forEach((n) => n.classList.toggle("active", n.dataset.route === route));
   els(".view").forEach((v) => v.classList.remove("active"));
@@ -605,8 +606,9 @@ function setSurahPlayBtn(playing) {
   if (btn) btn.innerHTML = playing ? `${ICON_PAUSE} ${t("pause")}` : `${ICON_PLAY} ${t("listen")}`;
 }
 function stopSurahAudio() {
-  if (currentAudio) currentAudio.pause();
+  if (currentAudio) { currentAudio.pause(); currentAudio.onended = null; }  // break the auto-advance chain
   _surahPlay.active = false;
+  if (_ayahBtn) { _ayahBtn.innerHTML = ICON_PLAY; _ayahBtn = null; }        // reset any per-ayah button
   setSurahPlayBtn(false);
 }
 function _surahNext() {
