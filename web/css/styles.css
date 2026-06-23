@@ -137,7 +137,7 @@ body[dir="rtl"] {
   width: 46px; height: 46px; border-radius: 14px;
   display: grid; place-items: center; overflow: hidden;
   background: radial-gradient(circle at 50% 42%, #1c4a92, #091f49);
-  box-shadow: 0 8px 22px rgba(31, 123, 255, .4);
+  box-shadow: 0 0 20px rgba(255, 255, 255, .55);
   animation: pulseGlow 3.5s ease-in-out infinite;
 }
 .brand .logo img {
@@ -147,8 +147,8 @@ body[dir="rtl"] {
   object-fit: contain;
 }
 @keyframes pulseGlow {
-  0%,100% { box-shadow: 0 8px 22px rgba(31, 123, 255, .35); }
-  50%     { box-shadow: 0 8px 34px rgba(53, 164, 255, .65); }
+  0%,100% { box-shadow: 0 0 18px rgba(255, 255, 255, .45); }
+  50%     { box-shadow: 0 0 30px rgba(255, 255, 255, .85); }
 }
 .brand .name { color: var(--wilayat-gold); font-size: 21px; font-weight: 800; letter-spacing: .5px; }
 .brand .name span { color: inherit; }
@@ -502,7 +502,7 @@ body[dir="rtl"] .list-item:hover { transform: translateX(-5px); }
   border-radius: 50%; overflow: hidden; cursor: pointer;
   background: radial-gradient(circle at 50% 42%, #1c4a92, #091f49);
   border: 1.5px solid var(--glass-hi);
-  box-shadow: 0 8px 22px rgba(31, 123, 255, .4);
+  box-shadow: 0 0 20px rgba(255, 255, 255, .55);
   animation: pulseGlow 3.5s ease-in-out infinite;
 }
 .topbar-logo img { width: 100%; height: 100%; object-fit: contain; object-position: center; display: block; }
