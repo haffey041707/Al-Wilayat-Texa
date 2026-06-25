@@ -148,9 +148,14 @@ function staticListSearch(list, qq, limit) {
 
 async function staticTafsir(s, a, ed) {
   if (!_tafMap[ed]) _tafMap[ed] = await _sjson(`quran/tafsir/${ed}/map.json`);
-  const cid = _tafMap[ed][`${s}:${a}`];
+  const map = _tafMap[ed];
+  const cid = map[`${s}:${a}`];
   if (cid == null) throw new Error("HTTP 404");
-  return { ...(await _sjson(`quran/tafsir/${ed}/c/${cid}.json`)), surah: s, ayah: a };
+  // al-Mizan groups verses; find the range this commentary block covers.
+  const pref = s + ":", same = [];
+  for (const k in map) { if (map[k] === cid && k.indexOf(pref) === 0) same.push(+k.split(":")[1]); }
+  const covers = same.length ? { from: Math.min(...same), to: Math.max(...same) } : null;
+  return { ...(await _sjson(`quran/tafsir/${ed}/c/${cid}.json`)), surah: s, ayah: a, covers };
 }
 function offlineBanner() {
   return `<div class="card" style="border-color:var(--gold);background:linear-gradient(135deg,rgba(31,123,255,.14),transparent);margin-bottom:16px">
@@ -596,7 +601,7 @@ async function toggleTafsir(s, a, btn) {
     const d = await api(`/quran/tafsir/${s}/${a}?edition=${tafsirEdition()}`);
     box.innerHTML = `
       <div style="margin-top:12px;padding:16px;border-radius:14px;background:rgba(8,35,84,.58);border:1px solid var(--glass-brd)">
-        <div class="eyebrow">📚 ${localizedText(d.name)} · ${localizedText(d.author || "Allamah Tabatabai")}</div>
+        <div class="eyebrow">📚 ${localizedText(d.name)} · ${localizedText(d.author || "Allamah Tabatabai")}${d.covers && d.covers.from !== d.covers.to ? ` · ${localizedText("verses")} ${s}:${d.covers.from}–${d.covers.to}` : ""}</div>
         <div style="margin-top:10px;line-height:1.8;white-space:pre-wrap;${ARABIC_SCRIPT_LANGS.includes(State.lang) ? "direction:rtl;text-align:right" : ""}">${tafsirToHtml(d.text)}</div>
       </div>`;
   } catch {

@@ -391,9 +391,14 @@ def tafsir_for(surah: int, ayah: int, edition: str = "almizan_en") -> dict | Non
     cid = data["mapping"].get(f"{surah}:{ayah}")
     if cid is None:
         return None
+    # al-Mizan comments on groups of verses; report the range this block covers.
+    pref = f"{surah}:"
+    same = [int(k.split(":")[1]) for k, v in data["mapping"].items()
+            if v == cid and k.startswith(pref)]
     return {
         "edition": data["edition"], "name": data["name"], "author": data.get("author"),
         "language": data["language"], "surah": surah, "ayah": ayah,
+        "covers": {"from": min(same), "to": max(same)} if same else None,
         "text": data["content"].get(str(cid), ""),
     }
 
