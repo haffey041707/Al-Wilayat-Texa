@@ -4,7 +4,7 @@
 
 **A complete Shia Islamic super-app — Qur'an, Hadith, Du'a, Ziyarat, prayer times, Qibla, the Islamic calendar, and more, in 9 languages.**
 
-_Powered by Aiba Dynamics_
+_Powered by Texa_
 
 ⚠️ **View-only. All Rights Reserved.** See [LICENSE](LICENSE) — this project may be **viewed only**; it may not be copied, used, modified, or redistributed.
 
