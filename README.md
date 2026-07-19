@@ -69,5 +69,5 @@ The Qur'an, Hadith, Du'a, and Ziyarat are the shared religious heritage of the M
 
 ## 📜 License
 
-**Proprietary — All Rights Reserved (View-Only).** © 2026 Aiba Dynamics (Muhammad Hafeez).
+**Proprietary — All Rights Reserved (View-Only).** © 2026 Texa (Muhammad Hafeez).
 You may **view** this project only. Copying, using, modifying, redistributing, or claiming ownership of any part is **not permitted** without written permission. See [LICENSE](LICENSE).
